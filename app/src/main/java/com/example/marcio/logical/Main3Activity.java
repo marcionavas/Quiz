@@ -37,6 +37,7 @@ public class Main3Activity extends AppCompatActivity {
             valor = extras.getInt("value");
             //The key argument here must match that used in the other activity
         }
+
         scroll = (ScrollView) findViewById(R.id.scroll1);
         resultado = (TextView) findViewById(R.id.txtResult);
         mostrar_result();
