@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.marcio.logical.MainActivity"
+    android:background="@drawable/homescreen">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Quiz Lógica de Programação"
+                    android:id="@+id/textView"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="68dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textIsSelectable="false"
+                    android:textSize="25dp"
+                    android:typeface="monospace" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="115dp">
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:hint="Usuario"
+                            android:ems="10"
+                            android:id="@+id/usuario"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="40dp"
+                            android:layout_below="@+id/textView3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="LogIn"
+                            android:id="@+id/textView3"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="25dp" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="Iniciar"
+                            android:id="@+id/btn_iniciar"
+                            android:background="#dbdee9"
+                            android:textSize="10dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/senha"
+                            android:layout_alignLeft="@+id/senha" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/senha"
+                            android:layout_below="@+id/usuario"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:hint="Senha" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="Top Rank"
+                            android:id="@+id/btn_Rank"
+                            android:background="#dbdee9"
+                            android:textSize="10dp"
+                            android:layout_alignEnd="@+id/senha"
+                            android:layout_below="@+id/senha"
+                            android:layout_marginTop="10dp"
+                            android:layout_alignRight="@+id/senha" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cadastre-se já"
+                    android:id="@+id/button_cadastrar"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="true"
+                    android:background="#dbdee9"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="15dp" />
+        </RelativeLayout>
+
+
+</RelativeLayout>

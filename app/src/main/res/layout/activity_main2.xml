@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/blackbord"
+    android:id="@+id/linear">
+
+
+
+    <ScrollView
+
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/scroll_question">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.marcio.logical.Main2Activity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Pergunta"
+        android:id="@+id/txt_pergunta"
+        android:textSize="24dp"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/text_tempo"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/radio_group"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/txt_pergunta"
+        android:layout_centerHorizontal="true"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+
+        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton"
+        android:id="@+id/radioButton"
+        android:layout_below="@+id/txt_pergunta"
+        android:layout_alignParentStart="true"
+            android:textColor="@color/abc_primary_text_material_dark"
+        android:checked="false"
+            android:textSize="20dp"
+            android:theme="@style/AppTheme" />
+
+        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton"
+        android:id="@+id/radioButton2"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/radioButton"
+        android:layout_alignParentStart="true"
+            android:textColor="@color/abc_primary_text_material_dark"
+        android:checked="false"
+            android:textSize="20dp"
+            android:theme="@style/AppTheme" />
+
+        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton"
+        android:id="@+id/radioButton3"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/radioButton2"
+        android:layout_alignParentStart="true"
+            android:textColor="@color/abc_primary_text_material_dark"
+        android:checked="false"
+            android:textSize="20dp"
+            android:theme="@style/AppTheme" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton"
+        android:id="@+id/radioButton4"
+        android:layout_below="@+id/radioButton3"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:checked="false"
+        android:textSize="20dp"
+        android:theme="@style/AppTheme" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desistir"
+                android:id="@+id/btn_desistir"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_marginLeft="25dp"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="40dp"
+                android:textAlignment="center"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proximo"
+                android:id="@+id/btn_proximo"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_gravity="right"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="40dp"
+                android:textAlignment="center" />
+        </RelativeLayout>
+
+    </RadioGroup>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Valendo: "
+        android:id="@+id/text_valor"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tempo"
+        android:id="@+id/text_tempo"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textSize="30dp"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/text_valor"
+        android:layout_alignStart="@+id/txt_pergunta" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="R$ 0"
+        android:id="@+id/valor_atual"
+        android:layout_alignBottom="@+id/text_tempo"
+        android:layout_alignEnd="@+id/txt_pergunta"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textSize="30dp" />
+
+
+
+
+</RelativeLayout>
+</ScrollView>
+
+
+
+</LinearLayout>
