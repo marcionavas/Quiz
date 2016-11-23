@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     DatabaseHelper myDb;
 
+
     UserSessionManager session;
 
     EditText ET_name, ET_pass;
