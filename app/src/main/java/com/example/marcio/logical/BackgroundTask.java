@@ -84,9 +84,9 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String reg_url = "http://10.7.1.125/webapp/register.php";
-        String login_url = "http://10.7.1.125/webapp/login.php";
-        String insert_data = "http://10.7.1.125/webapp/insertValores.php";
+        String reg_url = "http://logical.pe.hu/webapp/register.php";
+        String login_url = "http://logical.pe.hu/webapp/login.php";
+        String insert_data = "http://logical.pe.hu/webapp/insertValores.php";
         method = params[0];
 
         if (method.equals("register")) {
@@ -274,14 +274,14 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 else{
                     Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
                     session.setLoggedin(true, result);
-                    ctx.startActivity(new Intent(ctx, Main2Activity.class));
+                    ctx.startActivity(new Intent(ctx, QuizActivity.class));
                 }
             }
         else if (method == "recieve"){
 
 
 
-                Intent intent = new Intent(ctx, Main5Activity.class);
+                Intent intent = new Intent(ctx, WorldRankingActivity.class);
                 intent.putExtra("key1", result);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ctx.getApplicationContext().startActivity(intent);
@@ -370,7 +370,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         String line  = null;
 
         try {
-            URL url = new URL("http://10.7.1.125/webapp/getData.php");
+            URL url = new URL("http://logical.pe.hu/webapp/getData.php");
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             is = new BufferedInputStream(con.getInputStream());
             BufferedReader br = new BufferedReader(new InputStreamReader(is));

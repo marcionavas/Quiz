@@ -2,16 +2,21 @@ package com.example.marcio.logical;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main3Activity extends AppCompatActivity {
+public class LocalRankingActivity extends AppCompatActivity {
     ScrollView scroll;
     TextView resultado;
     String name;
@@ -22,11 +27,19 @@ public class Main3Activity extends AppCompatActivity {
     MediaPlayer player;
     UserSessionManager session;
     String wifi1;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.local_ranking_activity);
         session = new UserSessionManager(this);
         name = session.getName();
         sound_alarm();
@@ -41,20 +54,21 @@ public class Main3Activity extends AppCompatActivity {
         scroll = (ScrollView) findViewById(R.id.scroll1);
         resultado = (TextView) findViewById(R.id.txtResult);
         mostrar_result();
-        WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        if (wifi.isWifiEnabled()){
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifi.isWifiEnabled()) {
             wifi1 = "on";
-        }
-        else wifi1 = "off";
+        } else wifi1 = "on";
 
 
-       // myDb.updateSync_status(1);
+        // myDb.updateSync_status(1);
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void mostrar_result() { // Mostra resultado
-
 
 
         myDb.open();
@@ -64,7 +78,7 @@ public class Main3Activity extends AppCompatActivity {
 
         players = myDb.getRank(id);
 
-        if (players.size()== 0){
+        if (players.size() == 0) {
             int id1 = id;
             int pontos = valor;
             synced = 1;
@@ -72,14 +86,12 @@ public class Main3Activity extends AppCompatActivity {
             myDb.insertRank(id1, pontos);
             myDb.updateData(pontos, synced, id1);
 
-        }
-
-        else if (players.get(0).getValor()< valor){
+        } else if (players.get(0).getValor() < valor) {
             synced = 1;
             myDb.open();
             myDb.updateData(valor, synced, id);
 
-        }else if(players.get(0).getValor() >= valor){
+        } else if (players.get(0).getValor() >= valor) {
             synced = 0;
             myDb.open();
             myDb.updateData(valor, synced, id);
@@ -90,7 +102,7 @@ public class Main3Activity extends AppCompatActivity {
         players2 = getJogadores(players);
 
 
-       //List<Jogadores>players3 = getJogadores2(players);
+        //List<Jogadores>players3 = getJogadores2(players);
 
         //myDb.order_Table(players3);
 
@@ -105,9 +117,7 @@ public class Main3Activity extends AppCompatActivity {
         myDb.open();
 
 
-
-
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
 
             Jogadores jo = new Jogadores();
             int id2 = list.get(i).getId();
@@ -118,13 +128,11 @@ public class Main3Activity extends AppCompatActivity {
             int valor = list.get(i).getValor();
 
 
-                jo.setId(id);
-                jo.setValor(valor);
-                jo.setSynced(sync);
-                jo.setUser_name(username);
-                player.add(jo);
-
-
+            jo.setId(id);
+            jo.setValor(valor);
+            jo.setSynced(sync);
+            jo.setUser_name(username);
+            player.add(jo);
 
 
         }
@@ -138,9 +146,7 @@ public class Main3Activity extends AppCompatActivity {
         myDb.open();
 
 
-
-
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
 
             Jogadores jo = new Jogadores();
             int id2 = list.get(i).getId();
@@ -150,7 +156,7 @@ public class Main3Activity extends AppCompatActivity {
             int id = list1.get(0).getId();
             int valor = list.get(i).getValor();
 
-            if (sync != 0 ){
+            if (sync != 0) {
                 jo.setId(id);
                 jo.setValor(valor);
                 jo.setSynced(sync);
@@ -161,7 +167,6 @@ public class Main3Activity extends AppCompatActivity {
                 BackgroundTask backgroundTask = new BackgroundTask(this);
                 backgroundTask.execute(method, wifi1, username, ((String.valueOf(valor))));
             }
-
 
 
         }
@@ -189,5 +194,45 @@ public class Main3Activity extends AppCompatActivity {
         //player.setLooping(true);
 
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "LocalRanking Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.marcio.logical/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "LocalRanking Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.marcio.logical/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

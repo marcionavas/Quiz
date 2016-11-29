@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
     String name;
     MediaPlayer player;
     int valor2;
@@ -51,7 +51,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {// metodo principal que e executado asim que o aplicatiov executa
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.quiz_activity);
 
         session = new UserSessionManager(this);
 
@@ -156,7 +156,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             res4.setText(resposta_errada2);
         } else {
             contador.cancel();
-            Intent i = new Intent(getApplicationContext(), Main3Activity.class);
+            Intent i = new Intent(getApplicationContext(), LocalRankingActivity.class);
             //i.putExtra("name", name);
             i.putExtra("value", valor2);
             startActivity(i);
@@ -237,7 +237,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 // executa_quiz();
                 //group.clearCheck();
 
-                Intent i = new Intent(getApplicationContext(), Main2Activity.class);
+                Intent i = new Intent(getApplicationContext(), QuizActivity.class);
                 //Bundle bundle = new Bundle();
                 // bundle.putParcelable("data", (Parcelable) dados);
                 i.putExtra("dados", (Serializable) dados);
@@ -247,7 +247,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 i.putExtra("key3", flag);
                 startActivity(i);
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-                //setContentView(R.layout.activity_main2);
+                //setContentView(R.layout.quiz_activity);
                 finish();
             }
         }

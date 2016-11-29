@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.marcio.logical.Main3Activity"
+    tools:context=".LocalRankingActivity"
     android:background="@drawable/final2">
 
     <ScrollView
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Resultado"
+                android:text="Top Rank"
                 android:id="@+id/txtResult"
                 android:textSize="26dp"
                 android:textColor="#01010d"

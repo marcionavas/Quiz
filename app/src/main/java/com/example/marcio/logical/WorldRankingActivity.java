@@ -11,14 +11,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main5Activity extends AppCompatActivity {
+public class WorldRankingActivity extends AppCompatActivity {
 String json = "";
 List<Jogadores> list = new ArrayList<>();
     TextView resultado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main5);
+        setContentView(R.layout.world_ranking_activity);
 
         resultado = (TextView)findViewById(R.id.txtResult);
 

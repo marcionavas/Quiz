@@ -1,13 +1,10 @@
 package com.example.marcio.logical;
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -39,9 +36,9 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
     public void userReg(){
 
         String wifi1 = "";
-        WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        if (wifi.isWifiEnabled()){
-            wifi1 = "on";
+       // WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+       // if (wifi.isWifiEnabled()){
+           // wifi1 = "on";
 
             name = et_name.getText().toString();
             user_name = et_user.getText().toString();
@@ -65,8 +62,8 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
             backgroundTask.execute(method, name, user_name, pass, wifi1);
 
            // finish();
-        }
-        else Toast.makeText(this, "Ative o wifi para cadastrar um novo usuario!", Toast.LENGTH_LONG).show();
+      //  }
+       // else Toast.makeText(this, "Ative o wifi para cadastrar um novo usuario!", Toast.LENGTH_LONG).show();
 
 
     }
