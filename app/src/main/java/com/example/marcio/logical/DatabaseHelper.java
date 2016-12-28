@@ -197,13 +197,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
 
             while (cursor.moveToNext()) {
-                String nome = cursor.getString(1);
+                String email = cursor.getString(1);
                 String username = cursor.getString(2);
                 String pass = cursor.getString(3);
                 int valor = cursor.getInt(4);
 
                 Jogadores jogadores = new Jogadores();
-                jogadores.setNome(nome);
+                jogadores.setemail(email);
                 jogadores.setUser_name(username);
                 jogadores.setPass(pass);
                 jogadores.setValor(valor);
@@ -225,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues content = new ContentValues();
 
-        content.put("nome", jogadores.getNome());
+        content.put("email", jogadores.getemail());
         content.put("username", jogadores.getUser_name());
         content.put("password", jogadores.getPass());
         content.put("sync", jogadores.getSynced());

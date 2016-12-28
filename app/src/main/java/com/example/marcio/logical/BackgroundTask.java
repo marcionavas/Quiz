@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.NetworkOnMainThreadException;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -34,14 +35,16 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     String myJSON;
 
-    private static final String TAG_RESULTS="result";
+    private static final String TAG_RESULTS = "result";
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
-    private static final String TAG_ADD ="address";
+    private static final String TAG_ADD = "address";
 
     JSONArray peoples = null;
 
     ArrayList<HashMap<String, String>> personList;
+
+    String Resultado;
 
 
     AlertDialog alertDialog;
@@ -51,19 +54,16 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     Context ctx;
 
 
-
     String wifi = "";
     String method;
 
     DatabaseHelper myDb;
 
 
-
-
     private List<Jogadores> players;
     String objeto_json = "";
 
-    BackgroundTask(Context context){
+    BackgroundTask(Context context) {
         ctx = context;
 
 
@@ -73,10 +73,10 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         myDb = new DatabaseHelper(ctx);
-        personList = new ArrayList<HashMap<String,String>>();
+        personList = new ArrayList<HashMap<String, String>>();
         players = getNewTable();
         session = new UserSessionManager(ctx);
-       alertDialog = new AlertDialog.Builder(ctx).create();
+        alertDialog = new AlertDialog.Builder(ctx).create();
         alertDialog.setTitle("Login Information...");
 
 
@@ -90,7 +90,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         method = params[0];
 
         if (method.equals("register")) {
-            String name = params[1];
+            String email = params[1];
             String login_name = params[2];
             String login_pass = params[3];
             wifi = params[4];
@@ -103,10 +103,10 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String data = URLEncoder.encode("name","UTF-8") + "=" + URLEncoder.encode(name,"UTF-8") + "&"+
-                        URLEncoder.encode("login_name","UTF-8") + "=" + URLEncoder.encode(login_name,"UTF-8") + "&"+
-                        URLEncoder.encode("login_pass","UTF-8") + "=" + URLEncoder.encode(login_pass,"UTF-8");
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" +
+                        URLEncoder.encode("login_name", "UTF-8") + "=" + URLEncoder.encode(login_name, "UTF-8") + "&" +
+                        URLEncoder.encode("login_pass", "UTF-8") + "=" + URLEncoder.encode(login_pass, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -116,8 +116,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String response = "";
                 String line = "";
-                while((line = bufferedReader.readLine())!=null){
-                    response+=line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
 
                 }
                 bufferedReader.close();
@@ -132,9 +132,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             }
 
 
-        }
-
-        else if (method.equals("login")){
+        } else if (method.equals("login")) {
             String login_name = params[1];
             String login_pass = params[2];
             try {
@@ -144,9 +142,9 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String data = URLEncoder.encode("login_name","UTF-8") + "=" + URLEncoder.encode(login_name,"UTF-8") + "&"+
-                        URLEncoder.encode("login_pass","UTF-8") + "=" + URLEncoder.encode(login_pass,"UTF-8");
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String data = URLEncoder.encode("login_name", "UTF-8") + "=" + URLEncoder.encode(login_name, "UTF-8") + "&" +
+                        URLEncoder.encode("login_pass", "UTF-8") + "=" + URLEncoder.encode(login_pass, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -156,8 +154,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String response = "";
                 String line = "";
-                while((line = bufferedReader.readLine())!=null){
-                    response+=line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
 
                 }
                 bufferedReader.close();
@@ -170,9 +168,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        else if (method.equals("sync")){
+        } else if (method.equals("sync")) {
 
             String username = params[2];
             int valor = Integer.parseInt(params[3]);
@@ -180,63 +176,53 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             objeto_json = getjson1(username, valor);
 
 
+            // String name = params[1];
+            //String user_name = players.get(i).getUser_name();
+            // int valor = players.get(i).getValor();
 
+            try {
+                URL url = new URL(insert_data);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream OS = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(objeto_json, "UTF-8");
 
-                // String name = params[1];
-                //String user_name = players.get(i).getUser_name();
-               // int valor = players.get(i).getValor();
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                OS.close();
+                InputStream IS = httpURLConnection.getInputStream();
+                //IS.close();
 
-                try {
-                    URL url = new URL(insert_data);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
-                    OutputStream OS = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                    String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(objeto_json, "UTF-8");
+                // InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                String response = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
 
-                    bufferedWriter.write(data);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    OS.close();
-                    InputStream IS = httpURLConnection.getInputStream();
-                    //IS.close();
-
-                    // InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
-                    String response = "";
-                    String line = "";
-                    while((line = bufferedReader.readLine())!=null){
-                        response+=line;
-
-                    }
-                    bufferedReader.close();
-                    IS.close();
-                    httpURLConnection.disconnect();
-                    return response;
-
-                    // return "Cadastrado com sucesso";
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+                bufferedReader.close();
+                IS.close();
+                httpURLConnection.disconnect();
+                return response;
+
+                // return "Cadastrado com sucesso";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
-
-
-        }
-
-        else if (method.equals("recieve")){
+        } else if (method.equals("recieve")) {
 
             String json = download_data();
 
             return json;
-
-
-
-
 
 
         }
@@ -251,137 +237,126 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     }
 
 
-
-
-
-
     @Override
     protected void onPostExecute(String result) {
-        if (method.equals("register")){
-            if (result.equals("1")){
+        if (method.equals("register")) {
+            if (result.equals("1")) {
                 Toast.makeText(ctx, "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
-                ((Cadastro)ctx).finish();
+                ((Cadastro) ctx).finish();
 
-            }
-            else{
+            } else {
                 Toast.makeText(ctx, "Usuario já cadastrado, tente novamente!", Toast.LENGTH_LONG).show();
-        }
             }
-            else if (method.equals("login")){
-                if (result.equals("0")){
-                    Toast.makeText(ctx, "Usuário ou senha incorreto. Tente Novamente ou Cadastre-se é gratis!", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
-                    session.setLoggedin(true, result);
-                    ctx.startActivity(new Intent(ctx, QuizActivity.class));
-                }
+        } else if (method.equals("login")) {
+            if (result.equals("0")) {
+                Toast.makeText(ctx, "Usuário ou senha incorreto. Tente Novamente ou Cadastre-se é gratis!", Toast.LENGTH_LONG).show();
+            } else {
+                download_data2(result);
+                Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+                method = "copy_data";
+                //Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+
+
             }
-        else if (method == "recieve"){
+        } else if (method == "recieve") {
 
 
-
-                Intent intent = new Intent(ctx, WorldRankingActivity.class);
-                intent.putExtra("key1", result);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                ctx.getApplicationContext().startActivity(intent);
-
-
-
-
-
-
+            Intent intent = new Intent(ctx, WorldRankingActivity.class);
+            intent.putExtra("key1", result);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.getApplicationContext().startActivity(intent);
         }
 
-          //Toast.makeText(ctx, "Para ter todos os resultados ligue o WIFI", Toast.LENGTH_LONG).show();
+        //Toast.makeText(ctx, "Para ter todos os resultados ligue o WIFI", Toast.LENGTH_LONG).show();
+         if (method.equals("copy_data")) {
+            Resultado = result;
+            copiar_jogador();
+             session.setLoggedin(true, result);
+             ctx.startActivity(new Intent(ctx, QuizActivity.class));
+
+        }
     }
 
 
-
-    public String getjson(){
+    public String getjson() {
         JSONArray installedList = new JSONArray();
 
-        for (int i = 0; i < players.size(); i++)
-        {
-            try {
-
-               // if (players.get(i).getSynced() == 0 ){
-                    String nome = players.get(i).getNome();
-                    String username = players.get(i).getUser_name();
-                    String pass = players.get(i).getPass();
-
-                    JSONObject installedPackage = new JSONObject();
-
-                    installedPackage.put("nome", nome);
-                    installedPackage.put("username", username);
-                    installedPackage.put("password", pass);
-
-
-                    installedList.put(installedPackage);
-                //}
-
-
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        String dataToSend = installedList.toString();
-        return dataToSend;
-    }
-
-    public String getjson1(String user, int valor){
-        JSONArray installedList = new JSONArray();
-
-
+        for (int i = 0; i < players.size(); i++) {
             try {
 
                 // if (players.get(i).getSynced() == 0 ){
-
-               // String username = players.get(i).getUser_name();
-                //String valor = String.valueOf(players.get(i).getValor());
+                String email = players.get(i).getemail();
+                String username = players.get(i).getUser_name();
+                String pass = players.get(i).getPass();
 
                 JSONObject installedPackage = new JSONObject();
 
-
-                installedPackage.put("username", user);
-                installedPackage.put("valor", valor);
+                installedPackage.put("email", email);
+                installedPackage.put("username", username);
+                installedPackage.put("password", pass);
 
 
                 installedList.put(installedPackage);
                 //}
 
 
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        }
+        String dataToSend = installedList.toString();
+        return dataToSend;
+    }
+
+    public String getjson1(String user, int valor) {
+        JSONArray installedList = new JSONArray();
+
+
+        try {
+
+            // if (players.get(i).getSynced() == 0 ){
+
+            // String username = players.get(i).getUser_name();
+            //String valor = String.valueOf(players.get(i).getValor());
+
+            JSONObject installedPackage = new JSONObject();
+
+
+            installedPackage.put("username", user);
+            installedPackage.put("valor", valor);
+
+
+            installedList.put(installedPackage);
+            //}
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         String dataToSend = installedList.toString();
         return dataToSend;
     }
 
-    private String download_data(){
+    private String download_data() {
         InputStream is = null;
-        String line  = null;
+        String line = null;
 
         try {
             URL url = new URL("http://logical.pe.hu/webapp/getData.php");
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             is = new BufferedInputStream(con.getInputStream());
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             StringBuffer sb = new StringBuffer();
 
-            if (br != null){
-                while ((line=br.readLine()) != null){
+            if (br != null) {
+                while ((line = br.readLine()) != null) {
                     sb.append(line);
                 }
-            }else{
+            } else {
                 return null;
             }
 
@@ -390,8 +365,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (is != null){
+        } finally {
+            if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -401,6 +376,86 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         }
         return null;
     }
+
+
+    private String download_data2(String login_name) {
+        InputStream is = null;
+        String line = null;
+        String response = "";
+
+        try {
+            URL url = new URL("http://logical.pe.hu/webapp/copyuser.php");
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String data = URLEncoder.encode("login_name", "UTF-8") + "=" + URLEncoder.encode(login_name, "UTF-8");
+            bufferedWriter.write(data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+
+            String line1 = "";
+            while ((line1 = bufferedReader.readLine()) != null) {
+                response += line1;
+
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+
+
+        } catch (MalformedURLException |NetworkOnMainThreadException  e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Teste DownloadData2: "+response);
+        return response;
+
+    }
+
+    String json = Resultado;
+    List<Jogadores> list = new ArrayList<>();
+
+    public void copiar_jogador() {
+        list = getjason(json);
+
+        String email = list.get(0).getemail();
+        String username = list.get(0).getUser_name();
+        String senha = list.get(0).getPass();
+
+        Toast.makeText(ctx, email + "+" + username + "+" + senha, Toast.LENGTH_LONG).show();
+    }
+
+    public List<Jogadores> getjason(String json) {
+        List<Jogadores> players = new ArrayList<>();
+
+
+        JSONArray jsonarray = null;
+        try {
+            jsonarray = new JSONArray(json);
+            for (int i = 0; i < jsonarray.length(); i++) {
+                Jogadores jo = new Jogadores();
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                String name = jsonobject.getString("username");
+                int valores = Integer.parseInt(jsonobject.getString("valores"));
+
+                jo.setUser_name(name);
+                jo.setValor(valores);
+                players.add(jo);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return players;
+    }
+
 
     private List<Jogadores> getNewTable() { // metodo que cria umal ista do tipo Dados e recebe aquela lista do metodo que esta na outra classe db helper.
         List<Jogadores> player = new ArrayList<>();
