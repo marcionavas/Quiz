@@ -110,6 +110,23 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+        contador.cancel();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        contador.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        contador.cancel();
+    }
 
     CountDownTimer contador = new CountDownTimer(60000, 1000) { // Metodo contador do tempo de cada pergunta
 

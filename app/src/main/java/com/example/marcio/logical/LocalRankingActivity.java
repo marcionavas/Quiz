@@ -1,11 +1,14 @@
 package com.example.marcio.logical;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -16,9 +19,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalRankingActivity extends AppCompatActivity {
+public class LocalRankingActivity extends AppCompatActivity implements View.OnClickListener {
     ScrollView scroll;
     TextView resultado;
+    Button jogar_novamente;
     String name;
     int valor = 0, synced;
     DatabaseHelper myDb;
@@ -41,6 +45,8 @@ public class LocalRankingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.local_ranking_activity);
         session = new UserSessionManager(this);
+        jogar_novamente = (Button)findViewById(R.id.btn_jogar_novamente);
+        jogar_novamente.setOnClickListener(this);
         name = session.getName();
         sound_alarm();
         myDb = new DatabaseHelper(this);
@@ -234,5 +240,12 @@ public class LocalRankingActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent i = new Intent(getApplicationContext(),QuizActivity.class);
+        startActivity(i);
+        finish();
     }
 }

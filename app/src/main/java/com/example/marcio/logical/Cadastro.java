@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -43,6 +44,9 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
             name = et_name.getText().toString();
             user_name = et_user.getText().toString();
             pass = et_pass.getText().toString();
+        if (name.equals("") || user_name.equals("") || pass.equals("")){
+            Toast.makeText(getApplicationContext(), "Todos os campos devem ser preenchidos.", Toast.LENGTH_SHORT).show();
+        }else {
             synced = 0;
             String method = "register";
 
@@ -60,6 +64,7 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
 
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method, name, user_name, pass, wifi1);
+        }
 
            // finish();
       //  }
