@@ -43,14 +43,28 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jogar \n Novamente"
+                android:layout_alignParentEnd="false"
+                android:id="@+id/btn_jogar_novamente"
+                android:lines="2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top \n Rank"
+                android:id="@+id/btn_Rank_Global"
+                android:layout_alignParentStart="false"
+                android:lines="2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@+id/btn_jogar_novamente" />
+
         </RelativeLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jogar Novmente"
-        android:id="@+id/btn_jogar_novamente"
-        android:layout_below="@+id/scroll_question"
-        android:layout_alignStart="@+id/scroll_question" />
 </RelativeLayout>

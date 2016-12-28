@@ -11,8 +11,8 @@ import java.io.IOException;
 
 public class Cadastro extends AppCompatActivity implements View.OnClickListener {
 
-    EditText et_name, et_user, et_pass;
-    String name, user_name, pass;
+    EditText et_email, et_user, et_pass;
+    String email, user_name, pass;
     int synced;
     Button btn_cadastrar;
     DatabaseHelper myDb;
@@ -29,7 +29,7 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
         btn_cadastrar = (Button)findViewById(R.id.button);
         btn_cadastrar.setOnClickListener(this);
 
-        et_name = (EditText)findViewById(R.id.nome);
+        et_email = (EditText)findViewById(R.id.email);
         et_user = (EditText)findViewById(R.id.usuario);
         et_pass = (EditText)findViewById(R.id.senha1);
     }
@@ -41,16 +41,16 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
        // if (wifi.isWifiEnabled()){
            // wifi1 = "on";
 
-            name = et_name.getText().toString();
+            email = et_email.getText().toString();
             user_name = et_user.getText().toString();
             pass = et_pass.getText().toString();
-        if (name.equals("") || user_name.equals("") || pass.equals("")){
+        if (email.equals("") || user_name.equals("") || pass.equals("")){
             Toast.makeText(getApplicationContext(), "Todos os campos devem ser preenchidos.", Toast.LENGTH_SHORT).show();
         }else {
             synced = 0;
             String method = "register";
 
-            jo.setNome(name);
+            jo.setemail(email);
             jo.setUser_name(user_name);
             jo.setPass(pass);
             jo.setSynced(synced);
@@ -63,7 +63,7 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
             myDb.insertData(jo);
 
             BackgroundTask backgroundTask = new BackgroundTask(this);
-            backgroundTask.execute(method, name, user_name, pass, wifi1);
+            backgroundTask.execute(method, email, user_name, pass, wifi1);
         }
 
            // finish();

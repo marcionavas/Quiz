@@ -38,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:hint="Nome"
+            android:hint="E-mail"
             android:ems="10"
-            android:id="@+id/nome"
+            android:id="@+id/email"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/textView4"
@@ -53,8 +53,8 @@
             android:hint="Usuario"
             android:ems="10"
             android:id="@+id/usuario"
-            android:layout_below="@+id/nome"
-            android:layout_alignStart="@+id/nome"
+            android:layout_below="@+id/email"
+            android:layout_alignStart="@+id/email"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true" />
 

@@ -5,7 +5,7 @@ package com.example.marcio.logical;
  */
 //Classe que modela o objeto do tipo jogadroes
 public class Jogadores {
-    private String nome, user_name, pass;
+    private String email, user_name, pass;
     private int valor, synced, id;
 
     public int getId() {
@@ -49,12 +49,12 @@ public class Jogadores {
         this.valor = valor;
     }
 
-    public String getNome() {
-        return nome;
+    public String getemail() {
+        return email;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setemail(String email) {
+        this.email = email;
     }
 
     public Jogadores() {

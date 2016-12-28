@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView nome_usuLogado;
-    Button btn_iniciar, btn_logout;
+    Button btn_iniciar, btn_logout, btn_top_rank, btn_local_rank;
     UserSessionManager session;
 
     @Override
@@ -22,9 +22,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nome_usuLogado = (TextView)findViewById(R.id.txt_nomeLogado);
         btn_iniciar = (Button)findViewById(R.id.btn_iniciar);
         btn_logout = (Button)findViewById(R.id.btn_logout);
+        btn_top_rank = (Button)findViewById(R.id.btn_Top_Rank);
+        btn_local_rank = (Button)findViewById(R.id.btn_Local_Rank);
 
         btn_logout.setOnClickListener(this);
         btn_iniciar.setOnClickListener(this);
+        btn_top_rank.setOnClickListener(this);
+        btn_local_rank.setOnClickListener(this);
 
         nome_usuLogado.setText(session.getName());
     }
@@ -35,8 +39,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, QuizActivity.class));
             finish();
         }
-        else{
+        else if (v == btn_logout){
             logout();
+        }
+        else if (v == btn_top_rank){
+            String method = "recieve";
+            BackgroundTask backgroundTask = new BackgroundTask(this);
+            backgroundTask.execute(method);
+        }
+        else if(v == btn_local_rank){
+            startActivity(new Intent(MainActivity.this, LocalRankingActivity.class));
         }
     }
     private void logout(){

@@ -22,7 +22,7 @@ import java.util.List;
 public class LocalRankingActivity extends AppCompatActivity implements View.OnClickListener {
     ScrollView scroll;
     TextView resultado;
-    Button jogar_novamente;
+    Button jogar_novamente, rank_global;
     String name;
     int valor = 0, synced;
     DatabaseHelper myDb;
@@ -47,13 +47,15 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
         session = new UserSessionManager(this);
         jogar_novamente = (Button)findViewById(R.id.btn_jogar_novamente);
         jogar_novamente.setOnClickListener(this);
+        rank_global = (Button)findViewById(R.id.btn_Rank_Global);
+        rank_global.setOnClickListener(this);
         name = session.getName();
-        sound_alarm();
         myDb = new DatabaseHelper(this);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             //name = extras.getString("name");
             valor = extras.getInt("value");
+            sound_alarm();
             //The key argument here must match that used in the other activity
         }
 
@@ -244,8 +246,16 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getApplicationContext(),QuizActivity.class);
-        startActivity(i);
-        finish();
+        if (v == jogar_novamente){
+            Intent i = new Intent(getApplicationContext(),QuizActivity.class);
+            startActivity(i);
+            finish();
+        }
+        else if (v == rank_global){
+            String method = "recieve";
+            BackgroundTask backgroundTask = new BackgroundTask(this);
+            backgroundTask.execute(method);
+        }
+
     }
 }
