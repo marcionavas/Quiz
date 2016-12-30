@@ -76,8 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String method = "recieve";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method);
-
-
         }
     }
 
@@ -91,8 +89,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Runnable runnable = new Runnable() {
             public void run() {
-
-                boolean con;
 
                 try {
                     URL myUrl = new URL(url);
