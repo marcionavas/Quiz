@@ -31,6 +31,7 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     MediaPlayer player;
     UserSessionManager session;
     String wifi1;
+    Boolean alarm = false;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -75,6 +76,8 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
+
 
     public void mostrar_result() { // Mostra resultado
 
@@ -195,7 +198,7 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void sound_alarm() {
-
+        alarm = true;
         player = MediaPlayer.create(this, R.raw.fail);
         player.setVolume(10, 10);
         player.start();
@@ -227,6 +230,10 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onStop() {
         super.onStop();
+
+        if (alarm == true){
+            player.stop();
+        }
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
