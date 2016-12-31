@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (v == btn_cadastrar) {
             userReg();
         } else if (v == btn_iniciar) {
+            isConected=false;
             progressDialog = ProgressDialog.show(LoginActivity.this, "Login", "Por favor, aguarde...");
 
             //Thread responsável por verificar se há conexão com o servidor
