@@ -24,7 +24,7 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
     String name;
-    MediaPlayer player;
+    MediaPlayer player, player2;
     int valor2;
     DatabaseHelper myDb;
     Button btn_view;
@@ -55,6 +55,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         session = new UserSessionManager(this);
 
        name = session.getName();
+
+
 
 
 
@@ -114,14 +116,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
-        if (alarm1 == true || alarm2 == true){
+        if (alarm2 == true){
             player.stop();
-        }
-
-        try{
-            contador.cancel();
-        }catch (Exception e){
-
         }
         contador.cancel();
        // Toast.makeText(getApplicationContext(), "ON PAUSE" + s1, Toast.LENGTH_SHORT).show();
@@ -139,6 +135,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        try{
+            contador.cancel();
+        }catch (Exception e){
+
+        }
         contador.cancel();
     }
 
@@ -162,6 +163,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             public void onFinish() {
+                contador.cancel();
                 tempo_esgotado();
             }
         };
@@ -236,6 +238,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if (controlador2 < 20) {
             valor2 = desistir();
             controlador2 = 20;
+            contador.cancel();
             executa_quiz();
             return;
         }
@@ -260,8 +263,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 String text = selectedRadioButton.getText().toString();
                 if (text == dados.get(controlador2).getResposta()) {
                     valor2 = correct();
+                    contador.cancel();
                     Toast.makeText(getApplicationContext(), "Acertou! Você ganhou " + correct(), Toast.LENGTH_SHORT).show();
                 } else {
+                    contador.cancel();
                     valor2 = wrong();
                     Toast.makeText(getApplicationContext(), "Errou! Você ganhou " + wrong(), Toast.LENGTH_SHORT).show();
                     controlador2 = 20;
@@ -294,6 +299,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if (controlador2 < 20) {
             valor2 = wrong();
             controlador2 = 20;
+            contador.cancel();
             executa_quiz();
             return;
         }
@@ -575,10 +581,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void sound_alarm() {
-        alarm1 = true;
-        player = MediaPlayer.create(this, R.raw.caixa);
-        player.setVolume(10, 10);
-        player.start();
+        //alarm1 = true;
+        player2 = MediaPlayer.create(this, R.raw.caixa);
+        player2.setVolume(10, 10);
+        player2.start();
 
     }
 

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -229,7 +230,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         content.put("username", jogadores.getUser_name());
         content.put("password", jogadores.getPass());
         content.put("sync", jogadores.getSynced());
-        db.insert(Table_Name2, null, content);
+        try{
+            db.insertOrThrow(Table_Name2, null, content);
+        }
+        catch(SQLiteConstraintException ex){
+
+        }
+
 
         /*content.put(COL_2, nome );
        content.put(COL_3, valor );
