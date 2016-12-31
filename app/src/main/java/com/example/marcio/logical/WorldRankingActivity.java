@@ -3,6 +3,7 @@ package com.example.marcio.logical;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,10 @@ List<Jogadores> list = new ArrayList<>();
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }catch (RuntimeException e){
+            Toast.makeText(this, "Não foi possivel carregar o World Ranking, tente novamente " +
+                    "mais tarde", Toast.LENGTH_LONG).show();
+            finish();
         }
         return players;
     }
