@@ -1,7 +1,10 @@
 package com.example.marcio.logical;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +31,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     EditText ET_name, ET_pass;
     String login_name, login_pass;
+
+    private ProgressDialog progressDialog;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            userLogin();
+            progressDialog.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,60 +76,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
     @Override
     public void onClick(View v) { // clica de botao para gravar o nome do usuario e ir para a proxima activity
 
         if (v == btn_cadastrar) {
             userReg();
         } else if (v == btn_iniciar) {
-            threadLogin();
+            progressDialog = ProgressDialog.show(LoginActivity.this, "Login", "Por favor, aguarde...");
+
+            //Thread responsável por verificar se há conexão com o servidor
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+                        URL myUrl = new URL(url);
+                        URLConnection connection = myUrl.openConnection();
+                        connection.setConnectTimeout(2000);
+                        connection.connect();
+                        isConected = true;
+                    } catch (Exception e) {
+                        // Handle your exceptions
+                        isConected = false;
+                    }
+                    //handler finaliza a progressDialog e executa o método userLogin();
+                    handler.sendEmptyMessage(0);
+                }
+            }).start();
+
         } else if (v == btn_rank) {
-
-
             String method = "recieve";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method);
         }
+
     }
 
     public void userReg() {
         startActivity(new Intent(this, Cadastro.class));
-    }
-
-
-    //Thread responsável por verificar se há conexão com o servidor
-    public void threadLogin() {
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-
-                try {
-                    URL myUrl = new URL(url);
-                    URLConnection connection = myUrl.openConnection();
-                    connection.setConnectTimeout(2000);
-                    connection.connect();
-                    isConected = true;
-                } catch (Exception e) {
-                    // Handle your exceptions
-                    isConected = false;
-                }
-
-
-            }
-        };
-
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-
-
-        //O método join(), faz com que o programa pare aqui, e não seja executado enquanto a
-        // thread "mythread terminar a sua execução por completo
-        try {
-            mythread.join();
-            userLogin();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void userLogin() {
