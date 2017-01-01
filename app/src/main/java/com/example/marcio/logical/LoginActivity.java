@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.login_activity);
         //threadLogin();
         myDb = new DatabaseHelper(this);
+        check_connection();
 
         try {
             myDb.create();
@@ -112,6 +113,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             backgroundTask.execute(method);
         }
 
+    }
+
+    public void check_connection(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    URL myUrl = new URL(url);
+                    URLConnection connection = myUrl.openConnection();
+                    connection.setConnectTimeout(2000);
+                    connection.connect();
+                    isConected = true;
+                } catch (Exception e) {
+                    // Handle your exceptions
+                    isConected = false;
+                }
+                //handler finaliza a progressDialog e executa o método userLogin();
+                //handler.sendEmptyMessage(0);
+            }
+        }).start();
     }
 
     public void userReg() {

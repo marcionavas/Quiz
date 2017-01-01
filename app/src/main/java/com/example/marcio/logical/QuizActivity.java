@@ -21,25 +21,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
     String name;
-    MediaPlayer player;
+    MediaPlayer player, player2;
     int valor2;
     DatabaseHelper myDb;
-    Jogadores myPlayer = new Jogadores();
     Button btn_view;
     Button btn_desistir;
     private List<Dados> dados;
-    private List<Jogadores> players;
-    private List<Jogadores> players2;
-    Random r = new Random();
-    int valor_pergunta = 0, controlador2 = 0, total;
+    int controlador2 = 0;
     LinearLayout mLinearLayout;
     TextView pergunta, valor, tempo, valor_atual;
     boolean flag = false;
     boolean flag2 = false;
+    Boolean alarm1 = false;
+    Boolean alarm2 = false;
     ScrollView scroll;
     RadioGroup group;
     RadioButton res1;
@@ -47,6 +44,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton res3;
     RadioButton res4;
     UserSessionManager session;
+    CountDownTimer contador;
+    long s1 = 60000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {// metodo principal que e executado asim que o aplicatiov executa
@@ -56,6 +55,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         session = new UserSessionManager(this);
 
        name = session.getName();
+
+
+
+
 
 
         Bundle extras = getIntent().getExtras();
@@ -113,45 +116,64 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
+        if (alarm2 == true){
+            player.stop();
+        }
         contador.cancel();
+       // Toast.makeText(getApplicationContext(), "ON PAUSE" + s1, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        contador.cancel();
+       // Toast.makeText(getApplicationContext(), "ON START " + s1, Toast.LENGTH_SHORT).show();
+        contador_tempo(s1);
         contador.start();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        try{
+            contador.cancel();
+        }catch (Exception e){
+
+        }
         contador.cancel();
     }
 
-    CountDownTimer contador = new CountDownTimer(60000, 1000) { // Metodo contador do tempo de cada pergunta
-
-        public void onTick(long millisUntilFinished) {
-            //tempo.setText(""+millisUntilFinished / 1000);
-            long milis = millisUntilFinished / 1000;
-            if (milis <= 15) {
-                if (flag2 == false && milis == 8){
-                    sound_alarm2();
+    public void contador_tempo(long time){
+         contador = new CountDownTimer(time, 1000) { // Metodo contador do tempo de cada pergunta
+            @Override
+            public void onTick(long millisUntilFinished) {
+                //tempo.setText(""+millisUntilFinished / 1000);
+                s1 = millisUntilFinished;
+                long milis = millisUntilFinished / 1000;
+                if (milis <= 15) {
+                    if (flag2 == false && milis == 8){
+                        sound_alarm2();
+                    }
+                    tempo.setTextColor(Color.RED);
+                    tempo.setText("" + millisUntilFinished / 1000);
+                } else {
+                    tempo.setTextColor(Color.WHITE);
+                    tempo.setText("" + millisUntilFinished / 1000);
                 }
-                tempo.setTextColor(Color.RED);
-                tempo.setText("" + millisUntilFinished / 1000);
-            } else {
-                tempo.setTextColor(Color.WHITE);
-                tempo.setText("" + millisUntilFinished / 1000);
             }
-        }
 
-        public void onFinish() {
-            tempo_esgotado();
-        }
-    };
+            public void onFinish() {
+                contador.cancel();
+                tempo_esgotado();
+            }
+        };
+    }
+
+
 
     private void executa_quiz() {//Metodo que executa o quiz setando os perguntas e os radio buttons
         btn_desistir.setText("Desistir\nR$" + desistir());
+        contador_tempo(s1);
         contador.cancel();
         contador.start();
         shuffle();
@@ -216,6 +238,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if (controlador2 < 20) {
             valor2 = desistir();
             controlador2 = 20;
+            contador.cancel();
             executa_quiz();
             return;
         }
@@ -240,8 +263,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 String text = selectedRadioButton.getText().toString();
                 if (text == dados.get(controlador2).getResposta()) {
                     valor2 = correct();
+                    contador.cancel();
                     Toast.makeText(getApplicationContext(), "Acertou! Você ganhou " + correct(), Toast.LENGTH_SHORT).show();
                 } else {
+                    contador.cancel();
                     valor2 = wrong();
                     Toast.makeText(getApplicationContext(), "Errou! Você ganhou " + wrong(), Toast.LENGTH_SHORT).show();
                     controlador2 = 20;
@@ -274,6 +299,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         if (controlador2 < 20) {
             valor2 = wrong();
             controlador2 = 20;
+            contador.cancel();
             executa_quiz();
             return;
         }
@@ -555,15 +581,15 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void sound_alarm() {
-
-        player = MediaPlayer.create(this, R.raw.caixa);
-        player.setVolume(10, 10);
-        player.start();
+        //alarm1 = true;
+        player2 = MediaPlayer.create(this, R.raw.caixa);
+        player2.setVolume(10, 10);
+        player2.start();
 
     }
 
     public void sound_alarm2() {
-
+        alarm2 = true;
         player = MediaPlayer.create(this, R.raw.tictoc);
         player.setVolume(10, 10);
         player.start();
