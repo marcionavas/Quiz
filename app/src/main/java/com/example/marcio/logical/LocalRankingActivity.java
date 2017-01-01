@@ -31,6 +31,7 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     MediaPlayer player;
     UserSessionManager session;
     String wifi1;
+    Boolean alarm = false;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -55,7 +56,12 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
         if (extras != null) {
             //name = extras.getString("name");
             valor = extras.getInt("value");
-            sound_alarm();
+            if (valor < 1000000){
+                sound_alarm();
+            }else{
+                sound_alarm2();
+            }
+
             //The key argument here must match that used in the other activity
         }
 
@@ -75,6 +81,8 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
+
 
     public void mostrar_result() { // Mostra resultado
 
@@ -99,10 +107,10 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
             myDb.open();
             myDb.updateData(valor, synced, id);
 
-        } else if (players.get(0).getValor() >= valor) {
+        } else if (players.get(0).getValor() > valor) {
             synced = 0;
-            myDb.open();
-            myDb.updateData(valor, synced, id);
+           // myDb.open();
+            //myDb.updateData(valor, synced, id);
         }
 
         myDb.open();
@@ -195,8 +203,18 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void sound_alarm() {
-
+        alarm = true;
         player = MediaPlayer.create(this, R.raw.fail);
+        player.setVolume(10, 10);
+        player.start();
+        //player.setLooping(true);
+
+
+    }
+
+    public void sound_alarm2() {
+        alarm = true;
+        player = MediaPlayer.create(this, R.raw.tada);
         player.setVolume(10, 10);
         player.start();
         //player.setLooping(true);
@@ -227,6 +245,10 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onStop() {
         super.onStop();
+
+        if (alarm == true){
+            player.stop();
+        }
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
