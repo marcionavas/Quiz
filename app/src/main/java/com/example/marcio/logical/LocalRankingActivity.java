@@ -1,5 +1,6 @@
 package com.example.marcio.logical;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -39,6 +40,7 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
     private GoogleApiClient client;
 
 
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -274,10 +276,23 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
         else if (v == rank_global){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Carregando...");
+            progressDialog.show();
             String method = "recieve";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method);
         }
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        try {
+            progressDialog.dismiss();
+        }catch (Exception e){
+
+        }
     }
 }
