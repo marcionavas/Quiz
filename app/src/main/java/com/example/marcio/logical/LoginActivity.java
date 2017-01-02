@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String method = "login";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method, login_name, login_pass);
-            finish();
+           // finish();
         } else if (isConected == false) {
             login_name = ET_name.getText().toString();
             login_pass = ET_pass.getText().toString();
@@ -166,7 +166,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
                 //setContentView(R.layout.quiz_activity);
-                finish();
+                //finish();
 
             }
         }
