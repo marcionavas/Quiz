@@ -43,7 +43,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     ArrayList<HashMap<String, String>> personList;
 
-    String resultado, nome_usuario;
+    String resultado, nome_usuario, email_usu;
 
 
     AlertDialog alertDialog;
@@ -87,6 +87,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         String login_url = "http://logical.pe.hu/webapp/login.php";
         String copy_data_url = "http://logical.pe.hu/webapp/copyuser.php";
         String insert_data = "http://logical.pe.hu/webapp/insertValores.php";
+        String pass_recovery_url = "http://logical.pe.hu/webapp/password_rcv.php";
         method = params[0];
 
         if (method.equals("register")) {
@@ -260,6 +261,42 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if (method.equals("pass_recovery")){
+            String email = params[1];
+            email_usu = email;
+
+            try {
+                URL url = new URL(pass_recovery_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String response = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
+
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return response;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
@@ -304,15 +341,22 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             intent.putExtra("key1", result);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.getApplicationContext().startActivity(intent);
-        }
-
-        //Toast.makeText(ctx, "Para ter todos os resultados ligue o WIFI", Toast.LENGTH_LONG).show();
-         if (method.equals("copy_data")) {
+        }else if (method.equals("copy_data")) {
             resultado = result;
             copiar_jogador();
              session.setLoggedin(true, nome_usuario);
              ctx.startActivity(new Intent(ctx, QuizActivity.class));
 
+        }else if (method == "pass_recovery"){
+            if (result.equals("MAIL - OK")){
+                Toast.makeText(ctx, "Seus dados de login foram enviado pro e-mail: " + email_usu, Toast.LENGTH_LONG).show();
+            }
+            else if (result.equals("MAIL FAILED")){
+                Toast.makeText(ctx, "ERRO AO ENVIAR DADOS DE LOGIN, POR FAVOR TENTE NOVAMENTE.", Toast.LENGTH_LONG).show();
+            }
+            else if(result.equals("not found")){
+                Toast.makeText(ctx, "O E-mail informado não pode ser encontrado, por favor tente novamente ou cadastre-se", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

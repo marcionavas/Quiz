@@ -17,7 +17,7 @@ import java.net.URLConnection;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     QuizActivity main = new QuizActivity();
-    Button btn_iniciar, btn_cadastrar, btn_rank;
+    Button btn_iniciar, btn_cadastrar, btn_rank, btn_recu_senha;
 
     boolean flag = false;
     int controlador = 0;
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         session = new UserSessionManager(this);
 
         ET_name = (EditText) findViewById(R.id.usuario);
-        ET_pass = (EditText) findViewById(R.id.senha);
+        ET_pass = (EditText) findViewById(R.id.txt_email);
 
         btn_rank = (Button) findViewById(R.id.btn_Rank);
         btn_rank.setOnClickListener(this);
@@ -69,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btn_cadastrar = (Button) findViewById(R.id.button_cadastrar);
         btn_cadastrar.setOnClickListener(this);
+
+        btn_recu_senha = (Button)findViewById(R.id.btn_recuperar_senha);
+        btn_recu_senha.setOnClickListener(this);
 
         if (session.loggedin()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -110,6 +113,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String method = "recieve";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method);
+        }
+
+        else if (v == btn_recu_senha){
+            Intent i = new Intent(getApplicationContext(), Recuperacao_senha.class);
+            startActivity(i);
         }
 
     }

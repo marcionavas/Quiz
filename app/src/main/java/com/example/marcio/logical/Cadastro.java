@@ -52,7 +52,7 @@ public class Cadastro extends AppCompatActivity implements View.OnClickListener 
         btn_cadastrar = (Button) findViewById(R.id.button);
         btn_cadastrar.setOnClickListener(this);
 
-        et_email = (EditText) findViewById(R.id.email);
+        et_email = (EditText) findViewById(R.id.txt_email);
         et_user = (EditText) findViewById(R.id.usuario);
         et_pass = (EditText) findViewById(R.id.senha1);
     }
