@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else if (v == btn_recu_senha){
             Intent i = new Intent(getApplicationContext(), Recuperacao_senha.class);
             startActivity(i);
+            finish();
         }
 
     }

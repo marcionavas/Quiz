@@ -37,14 +37,14 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:hint="E-mail"
             android:ems="10"
             android:id="@+id/txt_email"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/textView4"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:layout_width="wrap_content"

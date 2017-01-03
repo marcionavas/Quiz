@@ -98,7 +98,6 @@ public class Recuperacao_senha extends AppCompatActivity implements View.OnClick
             String method = "pass_recovery";
             BackgroundTask backgroundTask = new BackgroundTask(this);
             backgroundTask.execute(method, email);
-
         } else if (isConected == false) {
             Toast.makeText(this, "Sem Conexçao Com a Internet", Toast.LENGTH_LONG).show();
         }

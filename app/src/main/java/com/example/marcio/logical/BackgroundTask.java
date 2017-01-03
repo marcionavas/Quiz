@@ -347,15 +347,18 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
              session.setLoggedin(true, nome_usuario);
              ctx.startActivity(new Intent(ctx, QuizActivity.class));
 
+
         }else if (method == "pass_recovery"){
             if (result.equals("MAIL - OK")){
-                Toast.makeText(ctx, "Seus dados de login foram enviado pro e-mail: " + email_usu, Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "Dados enviados para: " + email_usu, Toast.LENGTH_LONG).show();
+                ctx.startActivity(new Intent(ctx, LoginActivity.class));
+                ((Recuperacao_senha)ctx).finish();
             }
             else if (result.equals("MAIL FAILED")){
                 Toast.makeText(ctx, "ERRO AO ENVIAR DADOS DE LOGIN, POR FAVOR TENTE NOVAMENTE.", Toast.LENGTH_LONG).show();
             }
             else if(result.equals("not found")){
-                Toast.makeText(ctx, "O E-mail informado não pode ser encontrado, por favor tente novamente ou cadastre-se", Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "E-mail não encontrado, tente novamente.", Toast.LENGTH_LONG).show();
             }
         }
     }
