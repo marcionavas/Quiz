@@ -2,11 +2,18 @@ package com.example.marcio.logical;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -14,12 +21,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_iniciar, btn_logout, btn_top_rank, btn_local_rank;
     UserSessionManager session;
     ProgressDialog progressDialog;
+    DatabaseHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        myDb = new DatabaseHelper(this);
         session = new UserSessionManager(this);
         nome_usuLogado = (TextView) findViewById(R.id.txt_nomeLogado);
         btn_iniciar = (Button) findViewById(R.id.btn_iniciar);
@@ -33,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_local_rank.setOnClickListener(this);
 
         nome_usuLogado.setText(session.getName());
+
+        getJogadores2();
     }
 
     @Override
@@ -69,4 +80,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+    private void getJogadores2() { // Recebe dados da tabela jogadroes para fazer o rank
+
+        String user ="";
+        int valor = 0;
+        List<Jogadores> player = new ArrayList<>();
+        myDb.open();
+        List<Jogadores> list1 = myDb.sync_oncreate();
+
+        for(int i = 0; i < list1.size(); i++){
+            if (list1.get(i).getSynced() != 0) {
+
+                user = list1.get(i).getUser_name();
+                valor = list1.get(i).getValor();
+
+                String json = getjson1(user, valor);
+
+                String method = "sync2";
+                BackgroundTask backgroundTask = new BackgroundTask(this);
+                backgroundTask.execute(method, json);
+
+            }
+        }
+
+
+    }
+
+
+    public String getjson1(String user, int valor) {
+        JSONArray installedList = new JSONArray();
+
+
+        try {
+
+            JSONObject installedPackage = new JSONObject();
+
+
+            installedPackage.put("username", user);
+            installedPackage.put("valor", valor);
+
+
+            installedList.put(installedPackage);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        String dataToSend = installedList.toString();
+        return dataToSend;
+    }
+
+
 }

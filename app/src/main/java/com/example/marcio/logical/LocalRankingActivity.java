@@ -111,8 +111,8 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
 
         } else if (players.get(0).getValor() > valor) {
             synced = 0;
-           // myDb.open();
-            //myDb.updateData(valor, synced, id);
+            myDb.open();
+            myDb.updateData2(synced, id);
         }
 
         myDb.open();
@@ -180,6 +180,8 @@ public class LocalRankingActivity extends AppCompatActivity implements View.OnCl
                 jo.setSynced(sync);
                 jo.setUser_name(username);
                 player.add(jo);
+
+
 
                 String method = "sync";
                 BackgroundTask backgroundTask = new BackgroundTask(this);

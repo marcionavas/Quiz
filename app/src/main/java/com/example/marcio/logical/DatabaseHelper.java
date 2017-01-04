@@ -432,39 +432,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update("Rank", cv, "_id="+id, null);
         db.update("Jogadores", cv1, "id="+id, null);
+    }
+
+    public void updateData2(int synced, int id) {// Metodo que recebe um objeto do do tipo jogadores e da get nos seus atributos e inseri no banco.
+        SQLiteDatabase db = this.getWritableDatabase();
 
 
+        ContentValues cv1 = new ContentValues();
+
+        cv1.put("sync", synced);
 
 
-       /* String rawQuery = "UPDATE Rank SET pontuacao = '"+valor+"' WHERE _id = '"+id+"'";
-        String rawQuery1 = "UPDATE Jogadores SET sync = '"+synced+"' WHERE id = '"+id+"'";
-        db.rawQuery(rawQuery, null);
-        db.rawQuery(rawQuery1,null);*/
-
-
-       /* ContentValues content = new ContentValues();
-        ContentValues content1 = new ContentValues();
-
-
-
-        content.put("valor", valor);
-        content1.put("synced", synced);
-
-        String[] args = new String[]{String.valueOf(id)};
-
-
-        db.update("Rank", content, "_id=?", valor);
-        db.update("Jogadores", content1, "id=?",args);*/
-
-        /*content.put(COL_2, nome );
-       content.put(COL_3, valor );
-       long result =  db.insert(Table_Name2, null, content);
-        if (result == -1){
-            return false;
-        }else{
-            return true;
-        }*/
-
+        db.update("Jogadores", cv1, "id="+id, null);
     }
 
     public void updateSync_status(int synced) {// Metodo que recebe um objeto do do tipo jogadores e da get nos seus atributos e inseri no banco.
@@ -511,6 +490,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return usuario;
+
+
+    }
+
+    public List<Jogadores> sync_oncreate() {
+
+        List<Jogadores> sincron = new ArrayList<>();
+        try {
+            //get all rows from Department table
+            String query = "SELECT username, sync, pontuacao FROM Jogadores INNER JOIN Rank ON Jogadores.id = Rank._id";
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(DB_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            //cursor.moveToNext();
+
+            while (cursor.moveToNext()) {
+                Jogadores jo = new Jogadores();
+                jo.setUser_name(cursor.getString(0));
+                jo.setSynced(cursor.getInt(1));
+                jo.setValor(cursor.getInt(2));
+
+                sincron.add(jo);
+            }
+
+        }catch(Exception e){
+            Log.d("DB", e.getMessage());
+        }
+        return sincron;
 
 
     }

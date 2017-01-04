@@ -88,6 +88,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         String copy_data_url = "http://logical.pe.hu/webapp/copyuser.php";
         String insert_data = "http://logical.pe.hu/webapp/insertValores.php";
         String pass_recovery_url = "http://logical.pe.hu/webapp/password_rcv.php";
+        String insert_data2_url = "http://logical.pe.hu/webapp/insert_data2.php";
         method = params[0];
 
         if (method.equals("register")) {
@@ -297,6 +298,53 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if (method.equals("sync2")) {
+
+            String json = params[1];
+
+
+            // String name = params[1];
+            //String user_name = players.get(i).getUser_name();
+            // int valor = players.get(i).getValor();
+
+            try {
+                URL url = new URL(insert_data2_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream OS = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
+                String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                OS.close();
+                InputStream IS = httpURLConnection.getInputStream();
+                //IS.close();
+
+                // InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(IS, "iso-8859-1"));
+                String response = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
+
+                }
+                bufferedReader.close();
+                IS.close();
+                httpURLConnection.disconnect();
+                return response;
+
+                // return "Cadastrado com sucesso";
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
 
         return null;
@@ -359,6 +407,12 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             }
             else if(result.equals("not found")){
                 Toast.makeText(ctx, "E-mail não encontrado, tente novamente.", Toast.LENGTH_LONG).show();
+            }
+        }else if (method == "sync2"){
+            if (result == "ok"){
+                Toast.makeText(ctx, "Atualizado com sucesso.", Toast.LENGTH_LONG).show();
+            }else if(result == "fail"){
+                Toast.makeText(ctx, "ERRO !!!", Toast.LENGTH_LONG).show();
             }
         }
     }
