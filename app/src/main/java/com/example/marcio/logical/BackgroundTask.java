@@ -363,6 +363,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             if (result.equals("1")) {
                 Toast.makeText(ctx, "Cadastrado com sucesso", Toast.LENGTH_LONG).show();
                 ((Cadastro) ctx).finish();
+                ctx.startActivity(new Intent(ctx, LoginActivity.class));
+
 
             } else {
                 Toast.makeText(ctx, "Usuario já cadastrado, tente novamente!", Toast.LENGTH_LONG).show();
